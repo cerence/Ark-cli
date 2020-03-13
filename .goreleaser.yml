@@ -13,7 +13,6 @@ builds:
       - freebsd
       - windows
       - linux
-      - darwin
 
     # GOARCH to build for.
     # For more info refer to: https://golang.org/doc/install/source#environment
@@ -55,9 +54,4 @@ archives:
         format: zip
 
     files:
-      - LICENSE.txt
-      - README_{{.Os}}.md
-      - CHANGELOG.md
-      - docs/*
-      - design/*.png
-      - templates/**/*
+      - none*
