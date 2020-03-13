@@ -17,6 +17,7 @@ func HttpRequestUtil(url string, method string, request []byte, result interface
 	if err != nil {
 		return err
 	}
+	req.Header.Set("Content-Type", "application/json")
 
 	client := http.Client{}
 	res, err := client.Do(req)
@@ -56,5 +57,5 @@ func init() {
 
 	Warning = log.New(os.Stdout, "WARNING: ", log.Lshortfile)
 
-	Error = log.New(io.MultiWriter(os.Stdout, os.Stderr), "ERROR: ", log.Lshortfile)
+	Error = log.New(io.MultiWriter(os.Stderr), "ERROR: ", log.Lshortfile)
 }

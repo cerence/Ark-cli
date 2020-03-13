@@ -6,8 +6,12 @@ import (
 	"github.com/cerence/Ark-cli/cmd"
 	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
-	"log"
 	"os"
+)
+
+const (
+	BackEndHost = "backend-host"
+	APIHost     = "api-host"
 )
 
 func main() {
@@ -23,17 +27,16 @@ func main() {
 				Aliases: []string{"i"},
 				Usage:   "Import new device",
 				Action: func(c *cli.Context) error {
-					host := c.String("host")
-					cmd.Info.Println(fmt.Sprintf("Ark cloud server is %s", host))
-
-					args := c.Args()
-					if args.Len() == 0 {
-						return errors.New("no unique device code")
+					backendHost := extractBackEndHost(c)
+					apiHost := extractAPIHost(c)
+					uniqueDeviceCode, err := extractFirstArg(c)
+					if err != nil {
+						return err
 					}
-					uniqueDeviceCode := args.First()
+
 					cmd.Info.Println(fmt.Sprintf("Unique device code is %s", uniqueDeviceCode))
 
-					return cmd.ImportNewDevice(host, uniqueDeviceCode)
+					return cmd.ImportNewDevice(apiHost, backendHost, uniqueDeviceCode)
 				},
 			},
 			{
@@ -41,26 +44,31 @@ func main() {
 				Aliases: []string{"u"},
 				Usage:   "unbind device",
 				Action: func(c *cli.Context) error {
-					host := c.String("host")
-					cmd.Info.Println(fmt.Sprintf("Ark cloud server is %s", host))
-
-					args := c.Args()
-					if args.Len() == 0 {
-						return errors.New("no unique device code")
+					backendHost := extractBackEndHost(c)
+					uniqueDeviceCode, err := extractFirstArg(c)
+					if err != nil {
+						return err
 					}
-					uniqueDeviceCode := args.First()
+
 					cmd.Info.Println(fmt.Sprintf("Unique device code is %s", uniqueDeviceCode))
 
-					return cmd.UnbindDevice(host, uniqueDeviceCode)
+					return cmd.UnbindDevice(backendHost, uniqueDeviceCode)
 				},
 			},
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:        "host",
-				DefaultText: DefaultServer,
-				Value:       DefaultServer,
-				Usage:       "Ark cloud server",
+				Name:        BackEndHost,
+				DefaultText: DefaultBackendHost,
+				Value:       DefaultBackendHost,
+				Usage:       "Ark cloud backend host",
+				Required:    false,
+			},
+			&cli.StringFlag{
+				Name:        APIHost,
+				DefaultText: DefaultAPIHost,
+				Value:       DefaultAPIHost,
+				Usage:       "Ark cloud api host",
 				Required:    false,
 			},
 		},
@@ -68,8 +76,29 @@ func main() {
 
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		cmd.Error.Fatal(err)
 	}
+}
+
+func extractBackEndHost(c *cli.Context) string {
+	host := c.String(BackEndHost)
+	cmd.Info.Println(fmt.Sprintf("Ark cloud backend server is %s", host))
+	return host
+}
+
+func extractAPIHost(c *cli.Context) string {
+	host := c.String(APIHost)
+	cmd.Info.Println(fmt.Sprintf("Ark cloud api server is %s", host))
+	return host
+}
+
+func extractFirstArg(c *cli.Context) (string, error) {
+	args := c.Args()
+	if args.Len() == 0 {
+		return "", errors.New("no args")
+	}
+	arg := args.First()
+	return arg, nil
 }
 
 func displayLogo() {

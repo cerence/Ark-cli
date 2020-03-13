@@ -1,11 +1,12 @@
 package main
 
 var (
-	Name          = "Ark-Cli"
-	Usage         = "Ark Cloud Internal Cli Tool"
-	Version       = "1.0"
-	DefaultServer = "10.71.21.81:29099"
-	logo          = `
+	Name               = "Ark-Cli"
+	Usage              = "Ark Cloud Internal Cli Tool"
+	Version            = "1.0"
+	DefaultBackendHost = "10.71.21.81:29099"
+	DefaultAPIHost     = "10.71.21.81:28901"
+	logo               = `
 	
 
 
