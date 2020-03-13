@@ -1,0 +1,25 @@
+# .goreleaser.yml
+archives:
+  -
+    builds:
+      - default
+
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+    replacements:
+      amd64: 64-bit
+      386: 32-bit
+      darwin: macOS
+      linux: Tux
+
+
+    wrap_in_directory: true
+
+    format: zip
+
+    format_overrides:
+      - goos: windows
+        format: zip
+
+    files:
+      - none*
