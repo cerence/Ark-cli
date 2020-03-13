@@ -1,6 +1,39 @@
 # .goreleaser.yml
+
+builds:
+  # You can have multiple builds defined as a yaml list
+  -
+    id: "Ark-cli"
+    dir: go
+
+    env:
+      - CGO_ENABLED=0
+
+    goos:
+      - freebsd
+      - windows
+      - linux
+      - darwin
+
+    # GOARCH to build for.
+    # For more info refer to: https://golang.org/doc/install/source#environment
+    # Defaults are 386 and amd64.
+    goarch:
+      - amd64
+      - arm64
+
+    # GOMIPS and GOMIPS64 to build when GOARCH is mips, mips64, mipsle or mips64le.
+    # For more info refer to: https://golang.org/doc/install/source#environment
+    # Default is empty.
+    gomips:
+      - hardfloat
+      - softfloat
+
+
 archives:
   -
+
+    # Builds reference which build instances should be archived in this archive.
     builds:
       - default
 
@@ -22,4 +55,9 @@ archives:
         format: zip
 
     files:
-      - none*
+      - LICENSE.txt
+      - README_{{.Os}}.md
+      - CHANGELOG.md
+      - docs/*
+      - design/*.png
+      - templates/**/*
