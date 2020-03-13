@@ -12,7 +12,6 @@ builds:
     goos:
       - freebsd
       - windows
-      - linux
 
     # GOARCH to build for.
     # For more info refer to: https://golang.org/doc/install/source#environment
