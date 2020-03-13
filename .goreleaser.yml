@@ -4,23 +4,17 @@ builds:
   # You can have multiple builds defined as a yaml list
   -
     id: "Ark-cli"
-
     env:
       - CGO_ENABLED=0
-
     goos:
       - darwin
       - windows
 
-
-
 archives:
   -
-
     # Builds reference which build instances should be archived in this archive.
     builds:
       - default
-
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
     replacements:
@@ -30,3 +24,6 @@ archives:
 
     files:
       - none*
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
