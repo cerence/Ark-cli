@@ -4,7 +4,6 @@ builds:
   # You can have multiple builds defined as a yaml list
   -
     id: "Ark-cli"
-    dir: go
 
     env:
       - CGO_ENABLED=0
@@ -13,19 +12,6 @@ builds:
       - darwin
       - windows
 
-    # GOARCH to build for.
-    # For more info refer to: https://golang.org/doc/install/source#environment
-    # Defaults are 386 and amd64.
-    goarch:
-      - amd64
-      - arm64
-
-    # GOMIPS and GOMIPS64 to build when GOARCH is mips, mips64, mipsle or mips64le.
-    # For more info refer to: https://golang.org/doc/install/source#environment
-    # Default is empty.
-    gomips:
-      - hardfloat
-      - softfloat
 
 
 archives:
@@ -41,16 +27,6 @@ archives:
       amd64: 64-bit
       386: 32-bit
       darwin: macOS
-      linux: Tux
-
-
-    wrap_in_directory: true
-
-    format: zip
-
-    format_overrides:
-      - goos: windows
-        format: zip
 
     files:
       - none*
